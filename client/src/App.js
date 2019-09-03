@@ -36,7 +36,7 @@ putDataToDB = (description) => {
   while(currentIds.includes(idToBeAdded)) {
     idToBeAdded++;
   }
-  axios.post('http://localhost:3001/api/putData', {
+  axios.post('http://localhost:3001/api/create', {
     id: idToBeAdded,
     description: description,
   });
@@ -51,7 +51,7 @@ deleteFromDB = (idToDelete) => {
     }
   });
 
-  axios.delete('http://localhost:3001/api/deleteData', {
+  axios.delete('http://localhost:3001/api/delete', {
     data: {
       id: objToDelete,
     },
@@ -67,7 +67,7 @@ updateDB = (idToUpdate, updateToApply) => {
     }
   });
 
-  axios.post('http://localhost:3001/api/updateData', {
+  axios.post('http://localhost:3001/api/update', {
     id: objIdToUpdate,
     update: { description: updateToApply },
   });
