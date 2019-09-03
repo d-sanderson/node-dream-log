@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios'
+import axios from 'axios';
 class App extends Component {
   state = {
     data: [],
@@ -10,26 +10,18 @@ class App extends Component {
     idToUpdate: null,
     objToUpdate: null,
   };
-
   componentDidMount() {
     this.getDataFromDB();
     let interval = setInterval(this.getDataFromDB, 1000);
     this.setState({ intIsSet: interval })
   }
-
   componentWillUnmount() {
     if(this.state.intIsSet) {
     clearInterval(this.state.intIsSet);
     this.setState({ intIsSet: null });
   }
 }
-
-getDataFromDB = () => {
-  fetch('http://localhost:3001/api/memories')
-  .then((data) => data.json())
-  .then((res) => this.setState({ data: res.data }));
-};
-
+//  CREATE
 putDataToDB = (description) => {
   let currentIds = this.state.data.map((data) => data.id);
   let idToBeAdded = 0;
@@ -41,23 +33,13 @@ putDataToDB = (description) => {
     description: description,
   });
 }
-
-deleteFromDB = (idToDelete) => {
-  parseInt(idToDelete);
-  let objToDelete = null;
-  this.state.data.forEach((dat) => {
-    if(dat.id == idToDelete) {
-      objToDelete = dat._id
-    }
-  });
-
-  axios.delete('http://localhost:3001/api/delete', {
-    data: {
-      id: objToDelete,
-    },
-  });
+//  READ
+getDataFromDB = () => {
+  fetch('http://localhost:3001/api/memories')
+  .then((data) => data.json())
+  .then((res) => this.setState({ data: res.data }));
 };
-
+//  UPDATE
 updateDB = (idToUpdate, updateToApply) => {
   let objIdToUpdate = null;
   parseInt(idToUpdate);
@@ -66,27 +48,41 @@ updateDB = (idToUpdate, updateToApply) => {
       objIdToUpdate = data._id
     }
   });
-
   axios.post('http://localhost:3001/api/update', {
     id: objIdToUpdate,
     update: { description: updateToApply },
+  });
+};
+//  DELETE
+deleteFromDB = (idToDelete) => {
+  parseInt(idToDelete);
+  let objToDelete = null;
+  this.state.data.forEach((dat) => {
+    if(dat.id == idToDelete) {
+      objToDelete = dat._id
+    }
+  });
+  axios.delete('http://localhost:3001/api/delete', {
+    data: {
+      id: objToDelete,
+    },
   });
 };
 
 render() {
   const { data } = this.state;
   return (
-    <div style={{ color: 'green', backgroundColor: 'black', height: '100vh', margin: '0 33%'}}>
+    <div style={{ color: 'green', backgroundColor: 'black', height: '100vh', margin: '0 33%', textAlign: 'center'}}>
       <h1> Memory Log </h1>
       <ul>
         {data.length <= 0
         ? 'No Entries in DB'
         : data.map((dat) => (
           <li style={{ padding: '10px' }} key={dat.description}>
-            <span style={{ color: 'violet'}}> Memory: {dat.id}
+            <span style={{ color: 'lime'}}> Memory: {dat.id}
 
             </span>
-            <span style={{ color: 'violet'}}> data: </span>
+            <span style={{ color: 'lime'}}> Title: </span>
             {dat.description}
           </li>
         ))}
