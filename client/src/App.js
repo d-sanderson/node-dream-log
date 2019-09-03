@@ -76,17 +76,17 @@ updateDB = (idToUpdate, updateToApply) => {
 render() {
   const { data } = this.state;
   return (
-    <div>
+    <div style={{ color: 'green', backgroundColor: 'black', height: '100vh', margin: '0 33%'}}>
       <h1> Memory Log </h1>
       <ul>
         {data.length <= 0
         ? 'No Entries in DB'
         : data.map((dat) => (
           <li style={{ padding: '10px' }} key={dat.description}>
-            <span style={{ color: 'gray '}}> Memory: {dat.id}
+            <span style={{ color: 'violet'}}> Memory: {dat.id}
 
             </span>
-            <span style={{ color: 'gray '}}> data: </span>
+            <span style={{ color: 'violet'}}> data: </span>
             {dat.description}
           </li>
         ))}
