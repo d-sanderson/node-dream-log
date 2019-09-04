@@ -5,6 +5,8 @@ class App extends Component {
     data: [],
     id: 0,
     description: null,
+    title: null,
+    people: null,
     intIsSet: false,
     idToDelete: null,
     idToUpdate: null,
@@ -12,7 +14,7 @@ class App extends Component {
   };
   componentDidMount() {
     this.getDataFromDB();
-    let interval = setInterval(this.getDataFromDB, 1000);
+    let interval = setInterval(this.getDataFromDB, 5000);
     this.setState({ intIsSet: interval })
   }
   componentWillUnmount() {
@@ -22,7 +24,7 @@ class App extends Component {
   }
 }
 //  CREATE
-putDataToDB = (description) => {
+putDataToDB = (description, title, people) => {
   let currentIds = this.state.data.map((data) => data.id);
   let idToBeAdded = 0;
   while(currentIds.includes(idToBeAdded)) {
@@ -31,6 +33,8 @@ putDataToDB = (description) => {
   axios.post('http://localhost:3001/api/create', {
     id: idToBeAdded,
     description: description,
+    title: title,
+    people: people,
   });
 }
 //  READ
@@ -72,7 +76,7 @@ deleteFromDB = (idToDelete) => {
 render() {
   const { data } = this.state;
   return (
-    <div style={{ color: 'green', backgroundColor: 'black', height: '100vh', margin: '0 33%', textAlign: 'center'}}>
+    <div style={{ color: 'green', backgroundColor: 'black', height: '100vh', textAlign: 'center'}}>
       <h1> Memory Log </h1>
       <ul>
         {data.length <= 0
@@ -91,22 +95,38 @@ render() {
       <div style= {{ padding: '10px' }}>
       <input
         type="text"
-        onChange={(e)=> this.setState({ description: e.target.value})}
-        placeholder="add a memory"
+        onChange={(e)=> this.setState({ title: e.target.value})}
+        placeholder="name your memory"
         style={{ width: '200px' }}
       />
-      <button onClick={() =>this.putDataToDB(this.state.description)}>
+      <input
+        type="text"
+        onChange={(e)=> this.setState({ people: e.target.value})}
+        placeholder="who was there?"
+        style={{ width: '200px' }}
+      />
+      <input
+        type="text"
+        onChange={(e)=> this.setState({ description: e.target.value})}
+        placeholder="what happened?"
+        style={{ width: '200px' }}
+      />
+      <button onClick={() =>this.putDataToDB(this.state.description, this.state.title, this.state.people)}>
         ADD
       </button>
       </div>
       <div style={{ padding: '10px' }}>
         <input
+          id="id"
           type="text"
           style={{ width: '200px' }}
           onChange = { (e) => this.setState({ idToDelete: e.target.value })}
           placeholder="put id of item to delete here"
         />
-        <button onClick= {() => this.deleteFromDB(this.state.idToDelete)}>
+        <button onClick= {() => {
+          this.deleteFromDB(this.state.idToDelete)
+          document.querySelector('#id').value = '';
+          }}>
           Delete
         </button>
       </div>
