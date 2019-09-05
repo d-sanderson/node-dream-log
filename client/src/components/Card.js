@@ -4,8 +4,7 @@ export const CardWrapper = styled.div`
   overflow: hidden;
   padding: 0 0 32px;
   margin: 48px auto 0;
-  width: 300px;
-  font-family: Quicksand, arial, sans-serif;
+  width: 500px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 0px 40px rgba(0, 0, 0, 0.08);
   border-radius: 5px;
 `;
@@ -28,7 +27,7 @@ export const CardBody = styled.div`
 
 export const CardFieldset = styled.fieldset`
   position: relative;
-  padding: 0;
+  padding: 10px;
   margin: 0;
   border: 0;
 
@@ -46,7 +45,7 @@ export const CardFieldset = styled.fieldset`
 `;
 
 export const CardInput = styled.input`
-  
+
   padding: 7px 0;
   width: 100%;
   font-family: inherit;
@@ -72,7 +71,8 @@ export const CardButton = styled.button`
   font-weight: 700;
   color: #fff;
   background-color: #006332;
-  margin: 2% 0;
+  background: ${props => props.theme.bg};
+  margin: 5px 0;
   border: 0;
   border-radius: 35px;
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.08);

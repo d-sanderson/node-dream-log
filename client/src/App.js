@@ -14,7 +14,8 @@ import {
   CardInput
 } from "./components/Card";
 const theme = {
-  font: 'Chilanka, Arial'
+  font: 'Monda, Arial',
+  bg: 'red'
 };
 
 class App extends Component {
@@ -115,9 +116,9 @@ render() {
         </CardHeader>
         : data.map((dat) => (
           <CardWrapper key={dat.id.toString()}>
-            <CardHeading>
-              <CardHeader>{dat.title}</CardHeader>
-            </CardHeading>
+            <CardHeader>
+              <CardHeading>{dat.title}</CardHeading>
+            </CardHeader>
             <CardBody>
             <code>id: {dat.id}</code>
             <h3>People Involved: {dat.people}</h3>
@@ -130,72 +131,86 @@ render() {
 
 
       <CardWrapper>
-        <CardHeading>
+        <CardHeader>
           <CardHeading>Enter a Memory</CardHeading>
-        </CardHeading>
-        <CardInput
-        type="text"
-        onChange={(e)=> this.setState({ title: e.target.value})}
-        placeholder="name your memory"
-        />
-      <CardHeading>
+        </CardHeader>
+        <CardFieldset>
+          <CardInput
+          type="text"
+          onChange={(e)=> this.setState({ title: e.target.value})}
+          placeholder="Enter a title for your memory."
+          />
+        </CardFieldset>
+        <CardHeader>
           <CardHeading>Enter the year it happened:</CardHeading>
-        </CardHeading>
-      <CardInput
-        id='date'
-        type="date"
-        date="year"
-        onChange={(e)=> this.setState({ date: e.target.value})}
-        placeholder="enter the year it took place"
-      />
-      <CardHeading>
+        </CardHeader>
+        <CardFieldset>
+          <CardInput
+            id='date'
+            type="date"
+            date="year"
+            onChange={(e)=> this.setState({ date: e.target.value})}
+            placeholder="Enter the year it took place"
+          />
+        </CardFieldset>
+        <CardHeader>
           <CardHeading>The People who were there:</CardHeading>
-        </CardHeading>
-      <CardInput
-        id='people'
-        type="text"
-        onChange={(e)=> this.setState({ people: e.target.value})}
-        placeholder="who was there?"
-      />
-      <CardHeading>
+        </CardHeader>
+        <CardFieldset>
+          <CardInput
+            id='people'
+            type="text"
+            onChange={(e)=> this.setState({ people: e.target.value})}
+            placeholder="Who was there?"
+          />
+        </CardFieldset>
+        <CardHeader>
           <CardHeading>Memory description:</CardHeading>
-        </CardHeading>
-      <CardInput
-        textarea="true"
-        type="textarea"
-        onChange={(e)=> this.setState({ description: e.target.value})}
-        placeholder="what happened?"
-      />
-      <CardButton onClick={() =>this.putDataToDB(this.state.description, this.state.title, this.state.people, this.state.date)}>
-        ADD
+        </CardHeader>
+        <CardFieldset>
+          <CardInput
+            textarea="true"
+            type="textarea"
+            onChange={(e)=> this.setState({ description: e.target.value})}
+            placeholder="What happened?"
+          />
+      </CardFieldset>
+      <CardButton theme={theme.bg} onClick={() =>this.putDataToDB(this.state.description, this.state.title, this.state.people, this.state.date)}>
+        Save Your Memory
       </CardButton>
 
-
+      <CardFieldset>
         <CardInput
           id="id"
           type="text"
           onChange = { (e) => this.setState({ idToDelete: e.target.value })}
           placeholder="put id of item to delete here"
         />
+      </CardFieldset>
         <CardButton onClick= {() => this.deleteFromDB(this.state.idToDelete)}>
-          Delete
+          Delete Memory
         </CardButton>
+      <CardFieldset>
         <CardInput
           type="text"
           onChange = { (e) => this.setState({ idToUpdate: e.target.value })}
           placeholder="put id of item to update here"
         />
+        </CardFieldset>
+        <CardFieldset>
         <CardInput
           type="text"
           onChange = { (e) => this.setState({ updateToApply: e.target.value })}
           placeholder="put updated memory here"
         />
+        </CardFieldset>
       <CardButton
+        theme={theme.bg}
         onClick={() =>
         this.updateDB(this.state.idToUpdate, this.state.updateToApply)
         }
       >
-        Update
+        Update Memory
       </CardButton>
     </CardWrapper>
   </Wrapper>
