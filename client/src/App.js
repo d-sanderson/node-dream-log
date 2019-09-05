@@ -1,12 +1,38 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import styled, { css, ThemeProvider } from 'styled-components'
+
+//  Styled Components 💅
+import Wrapper from './components/Wrapper'
+import {
+  CardWrapper,
+  CardHeader,
+  CardHeading,
+  CardBody,
+  CardButton,
+  CardFieldset,
+  CardInput
+} from "./components/Card";
+const theme = {
+  font: 'Chilanka, Arial'
+};
+
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(date) {
+    console.log(date);
+  }
   state = {
     data: [],
     id: 0,
     description: null,
     title: null,
     people: null,
+    date: null,
     intIsSet: false,
     idToDelete: null,
     idToUpdate: null,
@@ -24,7 +50,7 @@ class App extends Component {
   }
 }
 //  CREATE
-putDataToDB = (description, title, people) => {
+putDataToDB = (description, title, people, date) => {
   let currentIds = this.state.data.map((data) => data.id);
   let idToBeAdded = 0;
   while(currentIds.includes(idToBeAdded)) {
@@ -35,6 +61,7 @@ putDataToDB = (description, title, people) => {
     description: description,
     title: title,
     people: people,
+    date: date
   });
 }
 //  READ
@@ -76,82 +103,103 @@ deleteFromDB = (idToDelete) => {
 render() {
   const { data } = this.state;
   return (
-    <div style={{ color: 'green', backgroundColor: 'black', height: '100vh', textAlign: 'center'}}>
-      <h1> Memory Log </h1>
-      <ul>
+  <ThemeProvider theme={theme}>
+    <Wrapper>
+      <CardHeader>
+        <CardHeading>Memory Log</CardHeading>
+      </CardHeader>
         {data.length <= 0
-        ? 'No Entries in DB'
+        ?
+        <CardHeader>
+          <CardHeading>'No Entries in DB' </CardHeading>
+        </CardHeader>
         : data.map((dat) => (
-          <li style={{ padding: '10px' }} key={dat.description}>
-            <span style={{ color: 'lime'}}> Memory: {dat.id}
-
-            </span>
-            <span style={{ color: 'lime'}}> Title: </span>
-            {dat.description}
-          </li>
+          <CardWrapper key={dat.id.toString()}>
+            <CardHeading>
+              <CardHeader>{dat.title}</CardHeader>
+            </CardHeading>
+            <CardBody>
+            <code>id: {dat.id}</code>
+            <h3>People Involved: {dat.people}</h3>
+            <p>Log: {dat.description}</p>
+            {dat.date}
+            </CardBody>
+          </CardWrapper>
         ))}
-      </ul>
 
-      <div style= {{ padding: '10px' }}>
-      <input
+
+
+      <CardWrapper>
+        <CardHeading>
+          <CardHeading>Enter a Memory</CardHeading>
+        </CardHeading>
+        <CardInput
         type="text"
         onChange={(e)=> this.setState({ title: e.target.value})}
         placeholder="name your memory"
-        style={{ width: '200px' }}
+        />
+      <CardHeading>
+          <CardHeading>Enter the year it happened:</CardHeading>
+        </CardHeading>
+      <CardInput
+        id='date'
+        type="date"
+        date="year"
+        onChange={(e)=> this.setState({ date: e.target.value})}
+        placeholder="enter the year it took place"
       />
-      <input
+      <CardHeading>
+          <CardHeading>The People who were there:</CardHeading>
+        </CardHeading>
+      <CardInput
+        id='people'
         type="text"
         onChange={(e)=> this.setState({ people: e.target.value})}
         placeholder="who was there?"
-        style={{ width: '200px' }}
       />
-      <input
-        type="text"
+      <CardHeading>
+          <CardHeading>Memory description:</CardHeading>
+        </CardHeading>
+      <CardInput
+        textarea="true"
+        type="textarea"
         onChange={(e)=> this.setState({ description: e.target.value})}
         placeholder="what happened?"
-        style={{ width: '200px' }}
       />
-      <button onClick={() =>this.putDataToDB(this.state.description, this.state.title, this.state.people)}>
+      <CardButton onClick={() =>this.putDataToDB(this.state.description, this.state.title, this.state.people, this.state.date)}>
         ADD
-      </button>
-      </div>
-      <div style={{ padding: '10px' }}>
-        <input
+      </CardButton>
+
+
+        <CardInput
           id="id"
           type="text"
-          style={{ width: '200px' }}
           onChange = { (e) => this.setState({ idToDelete: e.target.value })}
           placeholder="put id of item to delete here"
         />
-        <button onClick= {() => {
-          this.deleteFromDB(this.state.idToDelete)
-          document.querySelector('#id').value = '';
-          }}>
+        <CardButton onClick= {() => this.deleteFromDB(this.state.idToDelete)}>
           Delete
-        </button>
-      </div>
-      <div style={{ padding: '10px' }}>
-        <input
+        </CardButton>
+        <CardInput
           type="text"
-          style={{ width: '200px' }}
           onChange = { (e) => this.setState({ idToUpdate: e.target.value })}
           placeholder="put id of item to update here"
         />
-        <input
+        <CardInput
           type="text"
-          style={{ width: '200px' }}
           onChange = { (e) => this.setState({ updateToApply: e.target.value })}
           placeholder="put updated memory here"
         />
-      <button
+      <CardButton
         onClick={() =>
         this.updateDB(this.state.idToUpdate, this.state.updateToApply)
         }
       >
         Update
-      </button>
-    </div>
-  </div>
+      </CardButton>
+    </CardWrapper>
+  </Wrapper>
+  </ThemeProvider>
   )
   }
 

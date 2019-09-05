@@ -20,6 +20,4 @@ db.once('open', () => console.log('connected to the database ^_^'))
 db.on('error', console.error.bind(console, 'MongoDB connection error.'))
 const router = require('./memory.routes')
 app.use('/api', router);
-
-
 app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`))
