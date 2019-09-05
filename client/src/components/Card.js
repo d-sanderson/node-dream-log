@@ -71,7 +71,7 @@ export const CardButton = styled.button`
   font-weight: 700;
   color: #fff;
   background-color: #006332;
-  background: ${props => props.theme.bg};
+  background: ${props => props.red ? 'darkred' : '#006332'};
   margin: 5px 0;
   border: 0;
   border-radius: 35px;

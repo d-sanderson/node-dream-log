@@ -15,7 +15,6 @@ import {
 } from "./components/Card";
 const theme = {
   font: 'Monda, Arial',
-  bg: 'red'
 };
 
 class App extends Component {
@@ -175,7 +174,7 @@ render() {
             placeholder="What happened?"
           />
       </CardFieldset>
-      <CardButton theme={theme.bg} onClick={() =>this.putDataToDB(this.state.description, this.state.title, this.state.people, this.state.date)}>
+      <CardButton onClick={() =>this.putDataToDB(this.state.description, this.state.title, this.state.people, this.state.date)}>
         Save Your Memory
       </CardButton>
 
@@ -184,10 +183,10 @@ render() {
           id="id"
           type="text"
           onChange = { (e) => this.setState({ idToDelete: e.target.value })}
-          placeholder="put id of item to delete here"
+          placeholder="Enter the Memory Title to confirm deletion"
         />
       </CardFieldset>
-        <CardButton onClick= {() => this.deleteFromDB(this.state.idToDelete)}>
+        <CardButton red="red" onClick= {() => this.deleteFromDB(this.state.idToDelete)}>
           Delete Memory
         </CardButton>
       <CardFieldset>
@@ -205,7 +204,6 @@ render() {
         />
         </CardFieldset>
       <CardButton
-        theme={theme.bg}
         onClick={() =>
         this.updateDB(this.state.idToUpdate, this.state.updateToApply)
         }
