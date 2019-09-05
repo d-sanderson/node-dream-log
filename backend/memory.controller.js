@@ -15,8 +15,9 @@ module.exports = {
     });
   },
   deleteMemory: (req, res) => {
-    const { title } = req.body;
-    Memory.findOneAndDelete(title, (err)  => {
+    const { id } = req.body;
+    console.log(req.body)
+    Memory.findByIdAndRemove(id, (err) => {
       if(err) return res.send(err);
       return res.json({ success: true });
     })

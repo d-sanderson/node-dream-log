@@ -10,8 +10,7 @@ export const CardWrapper = styled.div`
 `;
 
 export const CardHeader = styled.header`
-  padding-top: 32px;
-  padding-bottom: 32px;
+  padding: 8px 0;
 `;
 
 export const CardHeading = styled.h1`
@@ -21,8 +20,7 @@ export const CardHeading = styled.h1`
 `;
 
 export const CardBody = styled.div`
-  padding-right: 32px;
-  padding-left: 32px;
+  padding: 32px 0;
 `;
 
 export const CardFieldset = styled.fieldset`
@@ -71,14 +69,13 @@ export const CardButton = styled.button`
   font-weight: 700;
   color: #fff;
   background-color: #006332;
-  background: ${props => props.red ? 'darkred' : '#006332'};
+  background: ${props => props.red ? 'red' : '#006332'};
   margin: 5px 0;
   border: 0;
   border-radius: 35px;
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.08);
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.02, 0.01, 0.47, 1);
-
   &:hover {
     box-shadow: 0 15px 15px rgba(0, 0, 0, 0.16);
     transform: translate(0, -5px);

@@ -119,10 +119,14 @@ render() {
               <CardHeading>{dat.title}</CardHeading>
             </CardHeader>
             <CardBody>
-            <code>id: {dat.id}</code>
+
             <h3>People Involved: {dat.people}</h3>
             <p>Log: {dat.description}</p>
-            {dat.date}
+            <div>Date : {Date(dat.date.toString()).toString().slice(0, 15)}</div>
+
+            <div>
+            <code>id: {dat.id}</code>
+            </div>
             </CardBody>
           </CardWrapper>
         ))}
@@ -131,7 +135,7 @@ render() {
 
       <CardWrapper>
         <CardHeader>
-          <CardHeading>Enter a Memory</CardHeading>
+          <CardHeading>Create a Memory</CardHeading>
         </CardHeader>
         <CardFieldset>
           <CardInput
@@ -183,12 +187,19 @@ render() {
           id="id"
           type="text"
           onChange = { (e) => this.setState({ idToDelete: e.target.value })}
-          placeholder="Enter the Memory Title to confirm deletion"
+          placeholder="Enter the Memory Id to confirm deletion"
         />
+
+      <CardHeader>
+        <CardHeading>Delete a Memory: </CardHeading>
+      </CardHeader>
       </CardFieldset>
-        <CardButton red="red" onClick= {() => this.deleteFromDB(this.state.idToDelete)}>
+        <CardButton red= "red" onClick= {() => this.deleteFromDB(this.state.idToDelete)}>
           Delete Memory
         </CardButton>
+      <CardHeader>
+        <CardHeading>Update a Memory: </CardHeading>
+      </CardHeader>
       <CardFieldset>
         <CardInput
           type="text"
