@@ -2,10 +2,18 @@ const Memory = require('./memory');
 
 module.exports = {
   getMemories: (req, res) => {
-    Memory.find((err, data) => {
-      if(err) return res.json({ success: false, error: err });
-      return res.json({ success: true, data: data });
+    Memory.find({})
+    .populate('author')
+    .exec()
+    .then(function(mems){
+      res.json({success : true, data: mems});
+    }, function(err){
+      next(err);
     });
+    // Memory.find((err, data) => {
+    //   if(err) return res.json({ success: false, error: err });
+    //   return res.json({ success: true, data: data });
+    // });
   },
   updateMemory: (req, res) => {
     const { id, update } = req.body;
