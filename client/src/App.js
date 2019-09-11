@@ -56,7 +56,7 @@ putDataToDB = (description, title, people, date) => {
   while(currentIds.includes(idToBeAdded)) {
     idToBeAdded++;
   }
-  axios.post('http://localhost:3001/api/create', {
+  axios.post('http://localhost:3001/api/memories/', {
     id: idToBeAdded,
     description: description,
     title: title,
@@ -66,7 +66,7 @@ putDataToDB = (description, title, people, date) => {
 }
 //  READ
 getDataFromDB = () => {
-  fetch('http://localhost:3001/api/memories')
+  fetch('http://localhost:3001/api/memories/')
   .then((data) => data.json())
   .then((res) => this.setState({ data: res.data }));
 };
@@ -79,7 +79,7 @@ updateDB = (idToUpdate, updateToApply) => {
       objIdToUpdate = data._id
     }
   });
-  axios.post('http://localhost:3001/api/update', {
+  axios.post('http://localhost:3001/api/memories/update', {
     id: objIdToUpdate,
     update: { description: updateToApply },
   });
@@ -93,7 +93,7 @@ deleteFromDB = (idToDelete) => {
       objToDelete = dat._id
     }
   });
-  axios.delete('http://localhost:3001/api/delete', {
+  axios.delete('http://localhost:3001/api/memories/delete', {
     data: {
       id: objToDelete,
     },
@@ -114,7 +114,7 @@ render() {
           <CardHeading>'No Entries in DB' </CardHeading>
         </CardHeader>
         : data.map((dat) => (
-          <CardWrapper key={dat.id.toString()}>
+          <CardWrapper key={dat.id}>
             <CardHeader>
               <CardHeading>{dat.title}</CardHeading>
             </CardHeader>
@@ -122,7 +122,7 @@ render() {
 
             <h3>People Involved: {dat.people}</h3>
             <p>Log: {dat.description}</p>
-            <div>Date : {Date(dat.date.toString()).toString().slice(0, 15)}</div>
+            <div>Date : { dat.date != null ? Date(dat.date.toString()).toString().slice(0, 15) : 'No Date Given'}</div>
 
             <div>
             <code>id: {dat.id}</code>

@@ -5,9 +5,13 @@ const MemSchema = new Schema(
   {
     id: Number,
     title: String,
+    owner: {type: Schema.Types.ObjectId, ref: 'user'},
     description: String,
     people: String,
-    date: Date,
+    date: {
+    type: Date,
+    default: Date.now
+    },
   },
   {
     timestamps: true
