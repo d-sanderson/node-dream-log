@@ -22,10 +22,11 @@ class Signin extends Component {
     token: null
   };
 
-  signIn = (username, password) => {
+  signIn = (e) => {
+    e.preventDefault();
     axios.post('http://localhost:3001/auth/signin', {
-    username: username,
-    password: password
+    username: this.state.username,
+    password: this.state.password
   })
   .then(res => {
     if (res.status === 200) {
@@ -45,10 +46,12 @@ class Signin extends Component {
 
   render() {
     return (
+      <form onSubmit={this.signIn}>
 <CardWrapper>
   <CardHeader>
     <CardHeading>Sign In</CardHeading>
   </CardHeader>
+
   <CardHeader>
     <CardHeading>Email</CardHeading>
   </CardHeader>
@@ -74,11 +77,14 @@ class Signin extends Component {
   </CardFieldset>
 
   <CardButton
+  type="submit"
     onClick={() =>
-    this.signIn(this.state.username, this.state.password)
+    this.signIn
     }
     >Login</CardButton>
+
 </CardWrapper>
+</form>
     )
     }
   }
