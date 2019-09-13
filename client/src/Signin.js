@@ -27,9 +27,8 @@ class Signin extends Component {
     username: username,
     password: password
   })
-  .then((res) => {
-    localStorage.setItem('access_token', res.data.token);
-  }).catch((err) => {
+  .then(res => localStorage.setItem('access_token', res.data.token))
+  .catch((err) => {
     console.log(err)
   })
 }
@@ -67,7 +66,7 @@ class Signin extends Component {
     onClick={() =>
     this.signIn(this.state.username, this.state.password)
     }
-    >Register</CardButton>
+    >Login</CardButton>
 </CardWrapper>
     )
     }

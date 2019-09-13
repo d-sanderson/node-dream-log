@@ -48,19 +48,11 @@ exports.put = function(req, res, next) {
 exports.post = function(req, res, next) {
   let newUser = new User(req.body);
 
+  newUser.save(function(err, user) {
+    if(err) { return next(err);}
 
-  User.create(newUser)
-  .then(function(user) {
-    res.json(user);
-  }, function(err) {
-    next(err);
-  // TODO Add this back when you bring in JWT
-  // newUser.save(function(err, user) {
-  //   if(err) {
-  //     return next(err);}
-
-    // var token = signToken(user._id);
-    // res.json({token: token});
+    let token = signToken(user._id);
+    res.json({token: token});
   });
 };
 
@@ -72,4 +64,8 @@ exports.delete = function(req, res, next) {
       res.json(removed);
     }
   });
+};
+
+exports.me = function(req, res) {
+  res.json(req.user.toJson());
 };

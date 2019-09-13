@@ -1,8 +1,8 @@
-var jwt = require('jsonwebtoken');
-var expressJwt = require('express-jwt');
-var config = require('../config/config');
-var checkToken = expressJwt({ secret: config.secrets.jwt });
-var User = require('../api/user/user');
+const jwt = require('jsonwebtoken');
+const expressJwt = require('express-jwt');
+const config = require('../config/config');
+const checkToken = expressJwt({ secret: config.secrets.jwt });
+const User = require('../api/user/user');
 
 exports.decodeToken = function() {
   return function(req, res, next) {
@@ -11,7 +11,7 @@ exports.decodeToken = function() {
     // so checkToken can see it. See follow the 'Bearer 034930493' format
     // so checkToken can see it and decode it
     if (req.query && req.query.hasOwnProperty('access_token')) {
-      req.headers.authorization = 'Bearer ' + req.query.access_token;
+      req.headers.authorization = 'Bearer ' + req.query.access_token || req.body.token;
     }
 
     // this will call next if token is valid
@@ -88,3 +88,4 @@ exports.signToken = function(id) {
     {expiresIn: config.expireTime}
   );
 };
+

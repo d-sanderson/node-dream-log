@@ -4,5 +4,5 @@ import Signup from './Signup';
 import Signin from './Signin';
 
 
-const App = () => <div><Signin /></div>;
+const App = () => <div><Signin /><Signup/><Memory /></div>;
 export default App;

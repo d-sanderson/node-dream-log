@@ -32,7 +32,7 @@ module.exports = {
   },
   createMemory: (req, res) => {
     let mem = new Memory();
-    const { id, description, people, title, date } = req.body;
+    const { id, title, date, people, description } = req.body;
 
     if((!id && id !== 0) || !description) {
       return res.json({
@@ -45,6 +45,7 @@ module.exports = {
     mem.people = people;
     mem.id = id;
     mem.date = date;
+    mem.owner = req.user.email;
     mem.save((err) => {
       if(err) return res.json({ success: false, error: err });
       return res.json({ success: true });

@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const memCtrl = require('./memory.controller');
+const controller = require('./memory.controller');
+const auth = require('../../auth/auth');
 
+const checkUser = [auth.decodeToken(), auth.getFreshUser()];
 router.route('/')
-  .get(memCtrl.getMemories)
-  .post(memCtrl.createMemory);
-router.route('/update').post(memCtrl.updateMemory);
-router.route('/delete').delete(memCtrl.deleteMemory);
+  .get(controller.getMemories)
+  .post(checkUser, controller.createMemory);
+router.route('/update').post(checkUser, controller.updateMemory);
+router.route('/delete').delete(checkUser, controller.deleteMemory);
 
 
 module.exports = router;

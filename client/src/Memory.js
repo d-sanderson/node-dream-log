@@ -59,10 +59,15 @@ putDataToDB = (description, title, people, date) => {
   axios.post('http://localhost:3001/api/memories', {
     id: idToBeAdded,
     title: title,
-    description: description,
+    date: date,
     people: people,
-    date: date
-  });
+    description: description,
+    },
+  {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      }
+    })
 }
 //  READ
 getDataFromDB = () => {
@@ -113,16 +118,21 @@ render() {
         <CardHeader>
           <CardHeading>'No Entries in DB' </CardHeading>
         </CardHeader>
-        : data.map((dat) => (
+        : localStorage.getItem('access_token') === null
+        ?
+        <CardHeader>
+          <CardHeading>'Unauthorized to post a memory' </CardHeading>
+        </CardHeader>
+        :data.map((dat) => (
           <CardWrapper key={dat.id.toString()}>
             <CardHeader>
-              <CardHeading> {dat.owner}</CardHeading>
+              <CardHeading> owner: {dat.owner}</CardHeading>
             </CardHeader>
             <CardBody>
 
             <h3>People Involved: {dat.people}</h3>
             <p>Log: {dat.description}</p>
-            <div>Date : {Date(dat.date.toString()).toString().slice(0, 15)}</div>
+            <div>Date : {Date(dat.date)}</div>
 
             <div>
             <code>id: {dat.id}</code>
