@@ -40,7 +40,7 @@ class Memory extends Component {
   };
   componentDidMount() {
     this.getDataFromDB();
-    let interval = setInterval(this.getDataFromDB, 5000);
+    let interval = setInterval(this.getDataFromDB, 1000);
     this.setState({ intIsSet: interval })
   }
   componentWillUnmount() {
@@ -125,10 +125,8 @@ render() {
         </CardHeader>
         :data.map((dat) => (
           <CardWrapper key={dat.id.toString()}>
-            <CardHeader>
-              <CardHeading> owner: {dat.owner}</CardHeading>
-            </CardHeader>
             <CardBody>
+            <p>owner: {dat.owner.username}</p>
 
             <h3>People Involved: {dat.people}</h3>
             <p>Log: {dat.description}</p>

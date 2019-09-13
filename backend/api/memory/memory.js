@@ -9,8 +9,7 @@ const MemSchema = new Schema(
     description: String,
     people: String,
     date: {
-    type: Date,
-    default: Date.now
+    type: Date
     },
   },
   {
