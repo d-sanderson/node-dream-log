@@ -121,7 +121,7 @@ render() {
         : localStorage.getItem('access_token') === null
         ?
         <CardHeader>
-          <CardHeading>'Unauthorized to post a memory' </CardHeading>
+          <CardHeading>'You must be logged in to view or create a memory' </CardHeading>
         </CardHeader>
         :data.map((dat) => (
           <CardWrapper key={dat.id.toString()}>

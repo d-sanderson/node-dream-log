@@ -27,11 +27,22 @@ class Signin extends Component {
     username: username,
     password: password
   })
-  .then(res => localStorage.setItem('access_token', res.data.token))
-  .catch((err) => {
-    console.log(err)
+  .then(res => {
+    if (res.status === 200) {
+      localStorage.setItem('access_token', res.data.token)
+      this.props.history.push('/');
+    } else {
+      const error = new Error(res.error);
+      throw error;
+    }
   })
+  .catch(err => {
+    console.error(err);
+    alert('Error logging in please try again');
+  });
 }
+
+
   render() {
     return (
 <CardWrapper>
