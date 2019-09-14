@@ -59,6 +59,17 @@ class Memory extends Component {
     this.setState({ intIsSet: null });
   }
 }
+
+formatDate = (date) => {
+  date = new Date(date)
+  const months = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+  const currentMonth = date.getMonth();
+  const currentDate = date.getDate();
+  const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
+  return `${months[currentMonth]}-${currentDate}-${date.getFullYear()}`;
+}
 //  CREATE
 putDataToDB = (description, title, people, date) => {
   let currentIds = this.state.data.map((data) => data.id);
@@ -94,9 +105,13 @@ updateDB = (idToUpdate, updateToApply) => {
       objIdToUpdate = data._id
     }
   });
-  axios.post('http://localhost:3001/api/update', {
+  axios.post('http://localhost:3001/api/memories/update', {
     id: objIdToUpdate,
     update: { description: updateToApply },
+  }, {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
   });
 };
 //  DELETE
@@ -147,7 +162,7 @@ render() {
 
             <h3>{dat.people}</h3>
             <p> {dat.description}</p>
-            <div>{dat.date}</div>
+            <div>{this.formatDate(dat.date)}</div>
 
             <div>
             <code>id: {dat.id}</code>
@@ -215,6 +230,10 @@ render() {
         Save Your Memory
       </Button>
 
+      <Container>
+      <CardHeader>
+        <CardHeading>Delete a Memory: </CardHeading>
+      </CardHeader>
       <CardFieldset>
         <CardInput
           id="id"
@@ -222,16 +241,13 @@ render() {
           onChange = { (e) => this.setState({ idToDelete: e.target.value })}
           placeholder="Enter the Memory Id to confirm deletion"
         />
-
-      <CardHeader>
-        <CardHeading>Delete a Memory: </CardHeading>
-      </CardHeader>
       </CardFieldset>
         <Button error
         onClick= {() => this.deleteFromDB(this.state.idToDelete)}
         >
           Delete Memory
         </Button>
+        </Container>
       <CardHeader>
         <CardHeading>Update a Memory: </CardHeading>
       </CardHeader>
