@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import {
+  Button
+} from 'nes-react'
 class Logout extends Component {
   constructor(props) {
     super(props);
@@ -10,13 +13,13 @@ class Logout extends Component {
 
   render() {
     return (
-  <div>
-      <input
-      type="button"
-      value="Log out"
-      onClick = {this.logout}
-      />
-    </div>
+      <Button
+        error
+        value="Log out"
+        onClick = {this.logout}
+      >
+        Logout
+      </Button>
     )
   }
 }

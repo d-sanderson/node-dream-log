@@ -140,9 +140,11 @@ render() {
         </CardHeader>
         : token === null
         ?
+        <Wrapper>
         <CardHeader>
           <CardHeading>'You must be logged in to view or post memories' </CardHeading>
         </CardHeader>
+        </Wrapper>
         :data.map((dat) => (
           <CardWrapper key={dat.id.toString()}>
             <CardBody>
