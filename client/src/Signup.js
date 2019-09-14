@@ -54,7 +54,7 @@ class Signup extends Component {
         <CardWrapper>
           <Container centered>
             <CardHeader>
-              <CardHeading>Signup</CardHeading>
+              <CardHeading>Register</CardHeading>
             </CardHeader>
             <CardHeader>
               <CardHeading>Email</CardHeading>

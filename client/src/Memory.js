@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import styled, { css, ThemeProvider } from 'styled-components'
+import { ThemeProvider } from 'styled-components'
 
 //  Styled Components 💅
 import Wrapper from './components/Wrapper'
@@ -15,11 +15,7 @@ import {
   Avatar,
   Balloon,
   List,
-  Table,
-  Progress,
-  Icon,
-  Sprite,
-  ControllerIcon
+  Table
 } from 'nes-react'
 
 import {
@@ -39,11 +35,6 @@ const token = localStorage.getItem('access_token') || null
 class Memory extends Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(date) {
-    console.log(date);
   }
   state = {
     data: [],
@@ -59,7 +50,7 @@ class Memory extends Component {
   };
   componentDidMount() {
     this.getDataFromDB();
-    let interval = setInterval(this.getDataFromDB, 1000);
+    let interval = setInterval(this.getDataFromDB, 500);
     this.setState({ intIsSet: interval })
   }
   componentWillUnmount() {
@@ -117,10 +108,13 @@ deleteFromDB = (idToDelete) => {
       objToDelete = dat._id
     }
   });
-  axios.delete('http://localhost:3001/api/delete', {
+  axios.delete('http://localhost:3001/api/memories/delete', {
     data: {
       id: objToDelete,
     },
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
   });
 };
 
@@ -151,9 +145,9 @@ render() {
             <h3>{dat.title}</h3>
             <p>owner: {dat.owner.username}</p>
 
-            <h3>People Involved: {dat.people}</h3>
-            <p>Log: {dat.description}</p>
-            <div>Date : {Date(dat.date)}</div>
+            <h3>{dat.people}</h3>
+            <p> {dat.description}</p>
+            <div>{dat.date}</div>
 
             <div>
             <code>id: {dat.id}</code>

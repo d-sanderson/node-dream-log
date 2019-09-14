@@ -10,10 +10,6 @@ module.exports = {
     }, function(err){
       next(err);
     });
-    // Memory.find((err, data) => {
-    //   if(err) return res.json({ success: false, error: err });
-    //   return res.json({ success: true, data: data });
-    // });
   },
   updateMemory: (req, res) => {
     const { id, update } = req.body;
@@ -42,25 +38,3 @@ module.exports = {
       });
   },
 }
-//   createMemory: (req, res) => {
-//     let mem = new Memory();
-//     const { id, title, date, people, description } = req.body;
-
-//     if((!id && id !== 0) || !description) {
-//       return res.json({
-//         success: false,
-//         error: 'INVALID INPUTS'
-//       });
-//     }
-//     mem.description = description;
-//     mem.title = title;
-//     mem.people = people;
-//     mem.id = id;
-//     mem.date = date;
-//     // mem.owner = req.user.email;
-//     mem.save((err) => {
-//       if(err) return res.json({ success: false, error: err });
-//       return res.json({ success: true });
-//     });
-//   },
-// }
