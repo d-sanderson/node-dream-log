@@ -4,6 +4,24 @@ import styled, { css, ThemeProvider } from 'styled-components'
 
 //  Styled Components 💅
 import Wrapper from './components/Wrapper'
+
+import {
+  Container,
+  Button,
+  Radios,
+  Checkbox,
+  TextInput,
+  TextArea,
+  Avatar,
+  Balloon,
+  List,
+  Table,
+  Progress,
+  Icon,
+  Sprite,
+  ControllerIcon
+} from 'nes-react'
+
 import {
   CardWrapper,
   CardHeader,
@@ -14,8 +32,9 @@ import {
   CardInput
 } from "./components/Card";
 const theme = {
-  font: 'Monda, Arial',
+  font: 'Press Start 2P'
 };
+const token = localStorage.getItem('access_token') || null
 
 class Memory extends Component {
   constructor(props) {
@@ -65,7 +84,7 @@ putDataToDB = (description, title, people, date) => {
     },
   {
       headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('access_token')
+        Authorization: 'Bearer ' + token
       }
     })
 }
@@ -109,23 +128,25 @@ render() {
   const { data } = this.state;
   return (
   <ThemeProvider theme={theme}>
-    <Wrapper>
+    <Wrapper theme={theme}>
+      <Container centered>
       <CardHeader>
-        <CardHeading>Memory Log</CardHeading>
+        <CardHeading> ✨☁✨ Dream Log ✨☁✨</CardHeading>
       </CardHeader>
         {data.length <= 0
         ?
         <CardHeader>
           <CardHeading>'No Entries in DB' </CardHeading>
         </CardHeader>
-        : localStorage.getItem('access_token') === null
+        : token === null
         ?
         <CardHeader>
-          <CardHeading>'You must be logged in to view or create a memory' </CardHeading>
+          <CardHeading>'You must be logged in to view or post memories' </CardHeading>
         </CardHeader>
         :data.map((dat) => (
           <CardWrapper key={dat.id.toString()}>
             <CardBody>
+            <h3>{dat.title}</h3>
             <p>owner: {dat.owner.username}</p>
 
             <h3>People Involved: {dat.people}</h3>
@@ -179,16 +200,24 @@ render() {
           <CardHeading>Memory description:</CardHeading>
         </CardHeader>
         <CardFieldset>
-          <CardInput
-            textarea="true"
+          <TextArea
             type="textarea"
             onChange={(e)=> this.setState({ description: e.target.value})}
             placeholder="What happened?"
           />
       </CardFieldset>
-      <CardButton onClick={() =>this.putDataToDB(this.state.description, this.state.title, this.state.people, this.state.date)}>
+      <Button
+        success
+        onClick={() =>
+        this.putDataToDB(
+          this.state.description,
+          this.state.title,
+          this.state.people,
+          this.state.date
+          )
+        }>
         Save Your Memory
-      </CardButton>
+      </Button>
 
       <CardFieldset>
         <CardInput
@@ -202,14 +231,16 @@ render() {
         <CardHeading>Delete a Memory: </CardHeading>
       </CardHeader>
       </CardFieldset>
-        <CardButton red= "red" onClick= {() => this.deleteFromDB(this.state.idToDelete)}>
+        <Button error
+        onClick= {() => this.deleteFromDB(this.state.idToDelete)}
+        >
           Delete Memory
-        </CardButton>
+        </Button>
       <CardHeader>
         <CardHeading>Update a Memory: </CardHeading>
       </CardHeader>
       <CardFieldset>
-        <CardInput
+        <TextInput
           type="text"
           onChange = { (e) => this.setState({ idToUpdate: e.target.value })}
           placeholder="put id of item to update here"
@@ -222,14 +253,18 @@ render() {
           placeholder="put updated memory here"
         />
         </CardFieldset>
-      <CardButton
+      <Button
+        primary
         onClick={() =>
-        this.updateDB(this.state.idToUpdate, this.state.updateToApply)
-        }
-      >
+        this.updateDB(
+          this.state.idToUpdate,
+          this.state.updateToApply
+          )
+      }>
         Update Memory
-      </CardButton>
+      </Button>
     </CardWrapper>
+    </Container>
   </Wrapper>
   </ThemeProvider>
   )

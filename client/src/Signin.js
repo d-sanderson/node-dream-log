@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import styled, { css, ThemeProvider } from 'styled-components'
 
 //  Styled Components 💅
 import {
@@ -12,6 +11,22 @@ import {
   CardInput
 } from "./components/Card";
 
+import {
+  Container,
+  Button,
+  Radios,
+  Checkbox,
+  TextInput,
+  TextArea,
+  Avatar,
+  Balloon,
+  List,
+  Table,
+  Progress,
+  Icon,
+  Sprite,
+  ControllerIcon
+} from 'nes-react'
 class Signin extends Component {
   constructor(props) {
     super(props);
@@ -48,6 +63,7 @@ class Signin extends Component {
     return (
       <form onSubmit={this.signIn}>
 <CardWrapper>
+<Container centered>
   <CardHeader>
     <CardHeading>Sign In</CardHeading>
   </CardHeader>
@@ -56,7 +72,7 @@ class Signin extends Component {
     <CardHeading>Email</CardHeading>
   </CardHeader>
   <CardFieldset>
-    <CardInput
+    <TextInput
      id="id"
      type="email"
      placeholder="enter your email"
@@ -68,7 +84,7 @@ class Signin extends Component {
     <CardHeading>Password</CardHeading>
   </CardHeader>
   <CardFieldset>
-    <CardInput
+    <TextInput
      id="id"
      type="password"
      placeholder="enter your password"
@@ -76,13 +92,13 @@ class Signin extends Component {
      />
   </CardFieldset>
 
-  <CardButton
+  <Button success
   type="submit"
     onClick={() =>
     this.signIn
     }
-    >Login</CardButton>
-
+    >Login</Button>
+  </Container>
 </CardWrapper>
 </form>
     )

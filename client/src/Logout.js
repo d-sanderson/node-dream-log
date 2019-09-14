@@ -4,7 +4,6 @@ class Logout extends Component {
   constructor(props) {
     super(props);
   }
-
   logout = function(){
     localStorage.removeItem('access_token')
 }
