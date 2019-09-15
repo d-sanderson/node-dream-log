@@ -1,10 +1,9 @@
+
 import React, { Component } from 'react';
 import axios from 'axios';
 import { ThemeProvider } from 'styled-components'
 
 //  Styled Components 💅
-import Wrapper from './components/Wrapper'
-
 import {
   Container,
   Button,
@@ -15,8 +14,12 @@ import {
   Avatar,
   Balloon,
   List,
-  Table
-} from 'nes-react'
+  Table,
+  Progress,
+  Icon,
+  Sprite,
+  ControllerIcon
+} from "nes-react";
 
 import {
   CardWrapper,
@@ -33,9 +36,7 @@ const theme = {
 const token = localStorage.getItem('access_token') || null
 
 class Memory extends Component {
-  constructor(props) {
-    super(props);
-  }
+
   state = {
     data: [],
     id: 0,
@@ -61,14 +62,13 @@ class Memory extends Component {
 }
 
 formatDate = (date) => {
-  if(typeof date == 'string') {
-    date = new Date(date)
-  }
+  date = new Date(date)
   const months = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
   const currentMonth = date.getMonth();
   const currentDate = date.getDate();
+  const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
   return `${months[currentMonth]}-${currentDate}-${date.getFullYear()}`;
 }
 //  CREATE
@@ -138,9 +138,10 @@ render() {
   const { data } = this.state;
   return (
   <ThemeProvider theme={theme}>
-    <Wrapper>
+
+      <div>
       <CardHeader>
-        <CardHeading> ✨☁✨ Dream Log ✨☁✨</CardHeading>
+        <CardHeading>   <Icon icon="star" medium />  Dream Log  <Icon icon="star" medium /></CardHeading>
       </CardHeader>
         {data.length <= 0
         ?
@@ -149,35 +150,37 @@ render() {
         </CardHeader>
         : token === null
         ?
-        <Wrapper>
         <CardHeader>
           <CardHeading>'You must be logged in to view or post memories' </CardHeading>
         </CardHeader>
-        </Wrapper>
         :data.map((dat) => (
           <CardWrapper key={dat.id.toString()}>
-            <CardBody>
-            <h3>{dat.title}</h3>
-            <p>owner: {dat.owner.username}</p>
+            <Container
+              title={this.formatDate(dat.date)}
+            >
+              <CardBody>
+              <h1>{dat.title}</h1>
+              <p>Author: {dat.owner.username}</p>
+              <p>People: {dat.people}</p>
+              <p>Description: {dat.description}</p>
 
-            <h3>{dat.people}</h3>
-            <p> {dat.description}</p>
-            <div>{this.formatDate(dat.date)}</div>
 
             <div>
             <code>id: {dat.id}</code>
             </div>
             </CardBody>
+            </Container>
           </CardWrapper>
         ))}
 
 
 
       <CardWrapper>
-      <Container centered>
+        <Container centered>
         <CardHeader>
           <CardHeading>Create a Memory</CardHeading>
         </CardHeader>
+        <Progress value={100} max={100} success />
         <CardFieldset>
           <CardInput
           type="text"
@@ -231,12 +234,14 @@ render() {
         Save Your Memory
       </Button>
       </Container>
-</CardWrapper>
-<CardWrapper>
-  <Container centered>
+      </CardWrapper>
+
+      <CardWrapper>
+      <Container centered>
       <CardHeader>
         <CardHeading>Delete a Memory: </CardHeading>
       </CardHeader>
+      <Progress value={100} max={100} error />
       <CardFieldset>
         <CardInput
           id="id"
@@ -253,11 +258,13 @@ render() {
         </Container>
         </CardWrapper>
 
-      <CardWrapper>
-        <Container centered>
+
+        <CardWrapper>
+      <Container centered>
       <CardHeader>
         <CardHeading>Update a Memory: </CardHeading>
       </CardHeader>
+      <Progress value={100} max={100} primary />
       <CardFieldset>
         <TextInput
           type="text"
@@ -283,8 +290,8 @@ render() {
         Update Memory
       </Button>
       </Container>
-    </CardWrapper>
-  </Wrapper>
+        </CardWrapper>
+    </div>
   </ThemeProvider>
   )
   }
