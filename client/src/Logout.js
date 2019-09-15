@@ -6,20 +6,21 @@ import {
 class Logout extends Component {
   constructor(props) {
     super(props);
+    this.logout = this.logout.bind(this)
   }
   logout = function(){
-    localStorage.removeItem('access_token')
+    localStorage.removeItem('access_token');
+
 }
 
   render() {
     return (
-      <Button
-        error
+      <button
         value="Log out"
         onClick = {this.logout}
       >
         Logout
-      </Button>
+      </button>
     )
   }
 }

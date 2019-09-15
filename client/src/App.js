@@ -7,20 +7,18 @@ import NavBar from './components/NavBar'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 const token = localStorage.getItem('access_token');
 class App extends Component {
-
   render() {
     return (
   <Router>
     <NavBar>
-      <Link to="/">Memories</Link>
+      <Link to="/memories">Memories</Link>
       <Link to="/register">Register</Link>
-      {token ? <Logout/> :
-      <Link to="/login">Login</Link>
-      }
+      <Logout/>
+      <Link to="/">Login</Link>
       </NavBar>
-    <Route exact path="/" component={Memory} />
+    <Route exact path="/" component={Signin} />
     <Route path="/register" component={Signup} />
-    <Route path="/login" component={Signin} />
+    <Route path="/memories" component={Memory} />
     </Router>
     )
   }

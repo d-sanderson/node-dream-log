@@ -61,13 +61,14 @@ class Memory extends Component {
 }
 
 formatDate = (date) => {
-  date = new Date(date)
+  if(typeof date == 'string') {
+    date = new Date(date)
+  }
   const months = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
   const currentMonth = date.getMonth();
   const currentDate = date.getDate();
-  const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
   return `${months[currentMonth]}-${currentDate}-${date.getFullYear()}`;
 }
 //  CREATE
@@ -137,8 +138,7 @@ render() {
   const { data } = this.state;
   return (
   <ThemeProvider theme={theme}>
-    <Wrapper theme={theme}>
-      <Container centered>
+    <Wrapper>
       <CardHeader>
         <CardHeading> ✨☁✨ Dream Log ✨☁✨</CardHeading>
       </CardHeader>
@@ -174,6 +174,7 @@ render() {
 
 
       <CardWrapper>
+      <Container centered>
         <CardHeader>
           <CardHeading>Create a Memory</CardHeading>
         </CardHeader>
@@ -229,8 +230,10 @@ render() {
         }>
         Save Your Memory
       </Button>
-
-      <Container>
+      </Container>
+</CardWrapper>
+<CardWrapper>
+  <Container centered>
       <CardHeader>
         <CardHeading>Delete a Memory: </CardHeading>
       </CardHeader>
@@ -248,6 +251,10 @@ render() {
           Delete Memory
         </Button>
         </Container>
+        </CardWrapper>
+
+      <CardWrapper>
+        <Container centered>
       <CardHeader>
         <CardHeading>Update a Memory: </CardHeading>
       </CardHeader>
@@ -275,8 +282,8 @@ render() {
       }>
         Update Memory
       </Button>
+      </Container>
     </CardWrapper>
-    </Container>
   </Wrapper>
   </ThemeProvider>
   )
