@@ -56,7 +56,6 @@ constructor(props) {
     this.getDataFromDB();
     let interval = setInterval(this.getDataFromDB, 5000);
     this.setState({ intIsSet: interval })
-
   }
   componentWillUnmount() {
     if(this.state.intIsSet) {
@@ -160,9 +159,11 @@ render() {
 
         : !isLoggedIn
         ?
+        <CardWrapper>
           <Container centered>
             <Button error>'You must be logged in to <br/>view or post memories' </Button>
           </Container>
+        </CardWrapper>
         :data.map((dat) => (
           <CardWrapper key={dat.id.toString()}>
             <Container
