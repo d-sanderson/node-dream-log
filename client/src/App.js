@@ -5,7 +5,9 @@ import Signin from './Signin';
 import Logout from './Logout';
 import NavBar from './components/NavBar'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 const token = localStorage.getItem('access_token') || null;
+
 class App extends Component {
   constructor() {
     super();
@@ -19,6 +21,7 @@ class App extends Component {
   logout = function(){
     localStorage.removeItem('access_token');
     this.setState({isLoggedIn: false})
+
 }
   checkUser = function(){
     this.setState({isLoggedIn: true})

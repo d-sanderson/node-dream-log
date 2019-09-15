@@ -48,16 +48,18 @@ class Signin extends Component {
     if (res.status === 200) {
       localStorage.setItem('access_token', res.data.token)
       this.props.history.push('/memories');
+      this.props.checkUser();
     } else {
       const error = new Error(res.error);
+      this.setState({ msg: error});
       throw error;
     }
   })
   .catch(err => {
     console.error(err);
-    this.setState({ msg: err.message});
+    this.setState({ msg: JSON.stringify(err)});
   });
-  this.props.checkUser();
+
 }
 
 
@@ -67,7 +69,7 @@ class Signin extends Component {
 <CardWrapper>
 <Container centered>
   <CardHeader>
-    <CardHeading>Sign In</CardHeading>
+    <CardHeading>Log In</CardHeading>
   </CardHeader>
  {this.state.msg}
   <CardHeader>

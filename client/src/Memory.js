@@ -56,6 +56,7 @@ constructor(props) {
     this.getDataFromDB();
     let interval = setInterval(this.getDataFromDB, 5000);
     this.setState({ intIsSet: interval })
+
   }
   componentWillUnmount() {
     if(this.state.intIsSet) {
@@ -96,7 +97,11 @@ putDataToDB = (description, title, people, date) => {
 }
 //  READ
 getDataFromDB = () => {
-  fetch('http://localhost:3001/api/memories')
+  fetch('http://localhost:3001/api/memories',  {headers: {
+    Authorization : 'Bearer ' + token
+}
+    // 'Content-Type': 'application/x-www-form-urlencoded',
+})
   .then((data) => data.json())
   .then((res) => this.setState({ data: res.data }));
 };
@@ -134,7 +139,7 @@ deleteFromDB = (idToDelete) => {
     headers: {
       Authorization: 'Bearer ' + token
     }
- });
+  });
 };
 
 render() {
@@ -152,6 +157,7 @@ render() {
         <CardHeader>
           <CardHeading>'No Entries in DB' </CardHeading>
         </CardHeader>
+
         : !isLoggedIn
         ?
           <Container centered>

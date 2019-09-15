@@ -5,7 +5,7 @@ const auth = require('../../auth/auth');
 
 const checkUser = [auth.decodeToken(), auth.getFreshUser()];
 router.route('/')
-  .get(controller.getMemories)
+  .get(checkUser, controller.getMemories)
   .post(checkUser, controller.post);
 router.route('/update').post(checkUser, controller.updateMemory);
 router.route('/delete').delete(checkUser, controller.deleteMemory);

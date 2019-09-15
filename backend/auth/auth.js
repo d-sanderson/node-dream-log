@@ -64,7 +64,7 @@ exports.verifyUser = function() {
         } else {
           // checking the passowords here
           if (!user.authenticate(password)) {
-            res.status(401).send('Wrong password');
+            res.status(402).send('Wrong password');
           } else {
             // if everything is good,
             // then attach to req.user
