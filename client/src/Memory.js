@@ -37,6 +37,9 @@ const token = localStorage.getItem('access_token') || null
 
 class Memory extends Component {
 
+constructor(props) {
+    super();
+}
   state = {
     data: [],
     id: 0,
@@ -51,7 +54,7 @@ class Memory extends Component {
   };
   componentDidMount() {
     this.getDataFromDB();
-    let interval = setInterval(this.getDataFromDB, 500);
+    let interval = setInterval(this.getDataFromDB, 5000);
     this.setState({ intIsSet: interval })
   }
   componentWillUnmount() {
@@ -131,11 +134,12 @@ deleteFromDB = (idToDelete) => {
     headers: {
       Authorization: 'Bearer ' + token
     }
-  });
+ });
 };
 
 render() {
   const { data } = this.state;
+  const {isLoggedIn } = this.props
   return (
   <ThemeProvider theme={theme}>
 
@@ -148,11 +152,11 @@ render() {
         <CardHeader>
           <CardHeading>'No Entries in DB' </CardHeading>
         </CardHeader>
-        : token === null
+        : !isLoggedIn
         ?
-        <CardHeader>
-          <CardHeading>'You must be logged in to view or post memories' </CardHeading>
-        </CardHeader>
+          <Container centered>
+            <Button error>'You must be logged in to <br/>view or post memories' </Button>
+          </Container>
         :data.map((dat) => (
           <CardWrapper key={dat.id.toString()}>
             <Container
@@ -174,123 +178,129 @@ render() {
         ))}
 
 
-
-      <CardWrapper>
-        <Container centered>
-        <CardHeader>
-          <CardHeading>Create a Memory</CardHeading>
-        </CardHeader>
-        <Progress value={100} max={100} success />
-        <CardFieldset>
-          <CardInput
-          type="text"
-          onChange={(e)=> this.setState({ title: e.target.value})}
-          placeholder="Enter a title for your memory."
-          />
-        </CardFieldset>
-        <CardHeader>
-          <CardHeading>Enter the year it happened:</CardHeading>
-        </CardHeader>
-        <CardFieldset>
-          <CardInput
-            id='date'
-            type="date"
-            date="year"
-            onChange={(e)=> this.setState({ date: e.target.value})}
-            placeholder="Enter the year it took place"
-          />
-        </CardFieldset>
-        <CardHeader>
-          <CardHeading>The People who were there:</CardHeading>
-        </CardHeader>
-        <CardFieldset>
-          <CardInput
-            id='people'
+          {isLoggedIn ?
+          <div>
+          <CardWrapper>
+          <Container centered>
+          <CardHeader>
+            <CardHeading>Create a Memory</CardHeading>
+          </CardHeader>
+          <Progress value={100} max={100} success />
+          <CardFieldset>
+            <CardInput
             type="text"
-            onChange={(e)=> this.setState({ people: e.target.value})}
-            placeholder="Who was there?"
-          />
+            onChange={(e)=> this.setState({ title: e.target.value})}
+            placeholder="Enter a title for your memory."
+            />
+          </CardFieldset>
+          <CardHeader>
+            <CardHeading>Enter the year it happened:</CardHeading>
+          </CardHeader>
+          <CardFieldset>
+            <CardInput
+              id='date'
+              type="date"
+              date="year"
+              onChange={(e)=> this.setState({ date: e.target.value})}
+              placeholder="Enter the year it took place"
+            />
+          </CardFieldset>
+          <CardHeader>
+            <CardHeading>The People who were there:</CardHeading>
+          </CardHeader>
+          <CardFieldset>
+            <CardInput
+              id='people'
+              type="text"
+              onChange={(e)=> this.setState({ people: e.target.value})}
+              placeholder="Who was there?"
+            />
+          </CardFieldset>
+          <CardHeader>
+            <CardHeading>Memory description:</CardHeading>
+          </CardHeader>
+          <CardFieldset>
+            <TextArea
+              type="textarea"
+              onChange={(e)=> this.setState({ description: e.target.value})}
+              placeholder="What happened?"
+            />
         </CardFieldset>
-        <CardHeader>
-          <CardHeading>Memory description:</CardHeading>
-        </CardHeader>
-        <CardFieldset>
-          <TextArea
-            type="textarea"
-            onChange={(e)=> this.setState({ description: e.target.value})}
-            placeholder="What happened?"
-          />
-      </CardFieldset>
-      <Button
-        success
-        onClick={() =>
-        this.putDataToDB(
-          this.state.description,
-          this.state.title,
-          this.state.people,
-          this.state.date
-          )
-        }>
-        Save Your Memory
-      </Button>
-      </Container>
-      </CardWrapper>
-
-      <CardWrapper>
-      <Container centered>
-      <CardHeader>
-        <CardHeading>Delete a Memory: </CardHeading>
-      </CardHeader>
-      <Progress value={100} max={100} error />
-      <CardFieldset>
-        <CardInput
-          id="id"
-          type="text"
-          onChange = { (e) => this.setState({ idToDelete: e.target.value })}
-          placeholder="Enter the Memory Id to confirm deletion"
-        />
-      </CardFieldset>
-        <Button error
-        onClick= {() => this.deleteFromDB(this.state.idToDelete)}
-        >
-          Delete Memory
+        <Button
+          success
+          onClick={() =>
+          this.putDataToDB(
+            this.state.description,
+            this.state.title,
+            this.state.people,
+            this.state.date
+            )
+          }>
+          Save Your Memory
         </Button>
         </Container>
         </CardWrapper>
 
-
         <CardWrapper>
-      <Container centered>
-      <CardHeader>
-        <CardHeading>Update a Memory: </CardHeading>
-      </CardHeader>
-      <Progress value={100} max={100} primary />
-      <CardFieldset>
-        <TextInput
-          type="text"
-          onChange = { (e) => this.setState({ idToUpdate: e.target.value })}
-          placeholder="put id of item to update here"
-        />
-        </CardFieldset>
+        <Container centered>
+        <CardHeader>
+          <CardHeading>Delete a Memory: </CardHeading>
+        </CardHeader>
+        <Progress value={100} max={100} error />
         <CardFieldset>
-        <CardInput
-          type="text"
-          onChange = { (e) => this.setState({ updateToApply: e.target.value })}
-          placeholder="put updated memory here"
-        />
+          <CardInput
+            id="id"
+            type="text"
+            onChange = { (e) => this.setState({ idToDelete: e.target.value })}
+            placeholder="Enter the Memory Id to confirm deletion"
+          />
         </CardFieldset>
-      <Button
-        primary
-        onClick={() =>
-        this.updateDB(
-          this.state.idToUpdate,
-          this.state.updateToApply
-          )
-      }>
-        Update Memory
-      </Button>
-      </Container>
-        </CardWrapper>
+          <Button error
+          onClick= {() => this.deleteFromDB(this.state.idToDelete)}
+          >
+            Delete Memory
+          </Button>
+          </Container>
+          </CardWrapper>
+
+
+          <CardWrapper>
+        <Container centered>
+        <CardHeader>
+          <CardHeading>Update a Memory: </CardHeading>
+        </CardHeader>
+        <Progress value={100} max={100} primary />
+        <CardFieldset>
+          <TextInput
+            type="text"
+            onChange = { (e) => this.setState({ idToUpdate: e.target.value })}
+            placeholder="put id of item to update here"
+          />
+          </CardFieldset>
+          <CardFieldset>
+          <CardInput
+            type="text"
+            onChange = { (e) => this.setState({ updateToApply: e.target.value })}
+            placeholder="put updated memory here"
+          />
+          </CardFieldset>
+        <Button
+          primary
+          onClick={() =>
+          this.updateDB(
+            this.state.idToUpdate,
+            this.state.updateToApply
+            )
+        }>
+          Update Memory
+        </Button>
+        </Container>
+          </CardWrapper></div> : ''
+        }
+
+
+
+
     </div>
   </ThemeProvider>
   )

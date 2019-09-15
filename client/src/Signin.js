@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 //  Styled Components 💅
 import {
   CardWrapper,
@@ -34,7 +34,8 @@ class Signin extends Component {
   state = {
     username: null,
     password: null,
-    token: null
+    token: null,
+    msg: null
   };
 
   signIn = (e) => {
@@ -54,8 +55,9 @@ class Signin extends Component {
   })
   .catch(err => {
     console.error(err);
-    alert('Error logging in please try again');
+    this.setState({ msg: err.message});
   });
+  this.props.checkUser();
 }
 
 
@@ -67,7 +69,7 @@ class Signin extends Component {
   <CardHeader>
     <CardHeading>Sign In</CardHeading>
   </CardHeader>
-
+ {this.state.msg}
   <CardHeader>
     <CardHeading>Email</CardHeading>
   </CardHeader>

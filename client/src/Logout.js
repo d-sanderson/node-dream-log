@@ -1,28 +1,23 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import {
-  Button
-} from 'nes-react'
-class Logout extends Component {
+export default class Logout extends Component {
   constructor(props) {
     super(props);
-    this.logout = this.logout.bind(this)
   }
-  logout = function(){
-    localStorage.removeItem('access_token');
-
-}
 
   render() {
-    return (
-      <button
-        value="Log out"
-        onClick = {this.logout}
+    const { isLoggedIn, logout } = this.props;
+    return ( <div>
+      {isLoggedIn ?
+      <a style={{color:'blue'}}
+        onClick = {logout}
       >
         Logout
-      </button>
+      </a> :
+      <Link to="/">Login</Link>
+    }
+    </div>
     )
   }
 }
-
-export default Logout;

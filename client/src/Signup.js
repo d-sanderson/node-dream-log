@@ -34,7 +34,8 @@ class Signup extends Component {
  }
   state = {
     username: null,
-    password: null
+    password: null,
+    msg: null
   };
 
   signUp = (e) => {
@@ -42,13 +43,18 @@ class Signup extends Component {
     axios.post('http://localhost:3001/api/users', {
     username: this.state.username,
     password: this.state.password
-  }).then(res => this.props.history.push('/'))
+  }).then(res => {
+    localStorage.setItem('access_token', res.data.token)
+    this.props.history.push('/memories')
+    this.setState({msg: JSON.stringify(res)})
+  })
   .catch(err => {
     console.error(err);
-    alert('Error registering please try again');
+    this.setState({msg: err.message})
   });
   };
   render() {
+    const { msg } = this.state
     return (
       <form onSubmit={this.signUp}>
         <CardWrapper>
@@ -56,11 +62,12 @@ class Signup extends Component {
             <CardHeader>
               <CardHeading>Register</CardHeading>
             </CardHeader>
+            {msg ? <Button error>{msg}</Button> : ''}
             <CardHeader>
               <CardHeading>Email</CardHeading>
             </CardHeader>
               <CardFieldset>
-              <CardInput
+              <TextInput
                 id="id"
                 type="email"
                 placeholder="enter your email"
@@ -71,7 +78,7 @@ class Signup extends Component {
               <CardHeading>Password</CardHeading>
             </CardHeader>
             <CardFieldset>
-              <CardInput
+              <TextInput
                 id="id"
                 type="password"
                 placeholder="enter your password"
