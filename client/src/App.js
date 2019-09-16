@@ -13,26 +13,58 @@ class App extends Component {
     super();
     this.logout = this.logout.bind(this)
     this.checkUser = this.checkUser.bind(this)
+
+    this.state = {
+      isLoggedIn : false,
+      data: null,
+      intIsSet: false,
+    }
 }
-  state = {
-    isLoggedIn : true
+
+
+  componentDidMount() {
+    this.getDataFromDB();
+    let interval = setInterval(this.getDataFromDB, 2000);
+    this.setState({ intIsSet: interval })
   }
+  componentWillUnmount() {
+    if(this.state.intIsSet) {
+    clearInterval(this.state.intIsSet);
+    this.setState({ intIsSet: null });
+  }
+}
+
+  getDataFromDB = () => {
+    fetch('http://localhost:3001/api/memories',  {headers: {
+      Authorization : 'Bearer ' + token
+  }
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+  })
+    .then((data) => data.json())
+    .then((res) => this.setState({ data: res.data }));
+  };
 
   logout = function(){
+    this.setState({isLoggedIn: false});
     localStorage.removeItem('access_token');
-    this.setState({isLoggedIn: false})
 
 }
+
+  clearData = () => {
+    this.setState({data: null})
+  }
   checkUser = function(){
     this.setState({isLoggedIn: true})
   }
+
+
   render() {
     return (
   <Router>
     <NavBar>
       <Link to="/memories">Memories</Link>
       <Link to="/register">Register</Link>
-      <Logout logout={this.logout} isLoggedIn={this.state.isLoggedIn}/>
+      <Logout logout={this.logout} clearData={this.clearData} isLoggedIn={this.state.isLoggedIn}/>
       </NavBar>
 
     <Route
@@ -42,12 +74,12 @@ class App extends Component {
 
     <Route
       path='/memories'
-      render={(props) => <Memory {...props} logout={this.logout} isLoggedIn={this.state.isLoggedIn}/>}
+      render={(props) => <Memory {...props} logout={this.logout} isLoggedIn={this.state.isLoggedIn} data={this.state.data}/>}
     />
 
     <Route
       path='/register'
-      render={(props) => <Signup {...props} />}
+      render={(props) => <Signup {...props} checkUser={this.checkUser}/>}
     />
 
     </Router>

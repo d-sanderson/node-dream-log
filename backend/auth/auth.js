@@ -44,6 +44,40 @@ exports.getFreshUser = function() {
   }
 };
 
+exports.verifySignup = function() {
+  return function(req, res, next) {
+    let username = req.body.username;
+    let password = req.body.password;
+
+    // if no username or password then send
+    if (!username || !password) {
+      res.status(400).json({ error: "You must enter a username and password" });
+      return;
+    }
+
+    // look user up in the DB so we can check
+    // if the passwords match for the username
+    User.findOne({username: username})
+      .then(function(user) {
+          // checking the passowords here
+          if (user) {
+            res.status(402).send('User Already exists');
+          } else {
+            res.status(200)
+            // if everything is good,
+            // then attach to req.user
+            // and call next so the controller
+            // can sign a token from the req.user._id
+            req.user = user;
+            next();
+          }
+
+      }, function(err) {
+        next(err);
+      });
+  };
+};
+
 exports.verifyUser = function() {
   return function(req, res, next) {
     let username = req.body.username;
@@ -51,7 +85,7 @@ exports.verifyUser = function() {
 
     // if no username or password then send
     if (!username || !password) {
-      res.status(400).send('You need a username and password');
+      res.status(400).json({ error: "You must enter a username and password" });;
       return;
     }
 

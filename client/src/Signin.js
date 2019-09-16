@@ -49,21 +49,32 @@ class Signin extends Component {
       localStorage.setItem('access_token', res.data.token)
       this.props.history.push('/memories');
       this.props.checkUser();
+
     } else {
       const error = new Error(res.error);
-      this.setState({ msg: error});
+
       throw error;
     }
   })
   .catch(err => {
     console.error(err);
-    this.setState({ msg: JSON.stringify(err)});
-  });
+    let msg = ''
+    if(err.message.includes('400')) {
+    msg = 'Must enter a username password'
+  }
+    if(err.message.includes('401')) {
+    msg = 'No user with that username'
+    }
 
+    if(err.message.includes('402')) {
+    msg = 'Wrong password'
+
+  }
+  this.setState({ msg: msg});
+  })
 }
-
-
   render() {
+    const { msg } = this.state
     return (
       <form onSubmit={this.signIn}>
 <CardWrapper>
@@ -71,7 +82,12 @@ class Signin extends Component {
   <CardHeader>
     <CardHeading>Log In</CardHeading>
   </CardHeader>
- {this.state.msg}
+  {msg &&
+  <Button
+  error>
+   {msg}
+  </Button >
+  }
   <CardHeader>
     <CardHeading>Email</CardHeading>
   </CardHeader>

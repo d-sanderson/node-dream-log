@@ -28,10 +28,8 @@ import {
   ControllerIcon
 } from 'nes-react'
 
+
 class Signup extends Component {
-  constructor(props) {
-    super(props);
- }
   state = {
     username: null,
     password: null,
@@ -44,13 +42,28 @@ class Signup extends Component {
     username: this.state.username,
     password: this.state.password
   }).then(res => {
+    if(res.status == 200) {
     localStorage.setItem('access_token', res.data.token)
-    this.props.history.push('/memories')
-    this.setState({msg: JSON.stringify(res)})
+    this.setState({ msg: 'Registered Successfully!'})
+    setTimeout(() => {
+      this.props.checkUser();
+      this.props.history.push('/memories')}
+      , 1000);
+
+  }
+
+
   })
   .catch(err => {
     console.error(err);
-    this.setState({msg: err.message})
+    let msg = ''
+    if(err.message.includes('400')) {
+      msg = 'Enter a username or password'
+    }
+    if(err.message.includes('402')) {
+      msg = 'That user already exists.'
+    }
+    this.setState({ msg: msg})
   });
   };
   render() {
@@ -62,7 +75,7 @@ class Signup extends Component {
             <CardHeader>
               <CardHeading>Register</CardHeading>
             </CardHeader>
-            {msg ? <Button error>{msg}</Button> : ''}
+            {msg && msg.includes('Success') ? <Button success>{msg}</Button> : msg ? <Button error>{msg}</Button> : ''}
             <CardHeader>
               <CardHeading>Email</CardHeading>
             </CardHeader>

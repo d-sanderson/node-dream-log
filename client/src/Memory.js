@@ -37,9 +37,6 @@ const token = localStorage.getItem('access_token') || null
 
 class Memory extends Component {
 
-constructor(props) {
-    super();
-}
   state = {
     data: [],
     id: 0,
@@ -52,17 +49,6 @@ constructor(props) {
     idToUpdate: null,
     objToUpdate: null,
   };
-  componentDidMount() {
-    this.getDataFromDB();
-    let interval = setInterval(this.getDataFromDB, 5000);
-    this.setState({ intIsSet: interval })
-  }
-  componentWillUnmount() {
-    if(this.state.intIsSet) {
-    clearInterval(this.state.intIsSet);
-    this.setState({ intIsSet: null });
-  }
-}
 
 formatDate = (date) => {
   date = new Date(date)
@@ -76,7 +62,7 @@ formatDate = (date) => {
 }
 //  CREATE
 putDataToDB = (description, title, people, date) => {
-  let currentIds = this.state.data.map((data) => data.id);
+  let currentIds = this.props.data.map((data) => data.id);
   let idToBeAdded = 0;
   while(currentIds.includes(idToBeAdded)) {
     idToBeAdded++;
@@ -94,21 +80,11 @@ putDataToDB = (description, title, people, date) => {
       }
     })
 }
-//  READ
-getDataFromDB = () => {
-  fetch('http://localhost:3001/api/memories',  {headers: {
-    Authorization : 'Bearer ' + token
-}
-    // 'Content-Type': 'application/x-www-form-urlencoded',
-})
-  .then((data) => data.json())
-  .then((res) => this.setState({ data: res.data }));
-};
 //  UPDATE
 updateDB = (idToUpdate, updateToApply) => {
   let objIdToUpdate = null;
   parseInt(idToUpdate);
-  this.state.data.forEach((data) => {
+  this.props.data.forEach((data) => {
     if(data.id == idToUpdate) {
       objIdToUpdate = data._id
     }
@@ -126,7 +102,7 @@ updateDB = (idToUpdate, updateToApply) => {
 deleteFromDB = (idToDelete) => {
   parseInt(idToDelete);
   let objToDelete = null;
-  this.state.data.forEach((dat) => {
+  this.props.data.forEach((dat) => {
     if(dat.id == idToDelete) {
       objToDelete = dat._id
     }
@@ -142,8 +118,7 @@ deleteFromDB = (idToDelete) => {
 };
 
 render() {
-  const { data } = this.state;
-  const {isLoggedIn } = this.props
+  const {isLoggedIn, data } = this.props
   return (
   <ThemeProvider theme={theme}>
 
@@ -151,7 +126,7 @@ render() {
       <CardHeader>
         <CardHeading>   <Icon icon="star" medium />  Dream Log  <Icon icon="star" medium /></CardHeading>
       </CardHeader>
-        {data.length <= 0
+        {data == null || data.length <= 0
         ?
         <CardHeader>
           <CardHeading>'No Entries in DB' </CardHeading>
