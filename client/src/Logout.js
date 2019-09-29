@@ -3,11 +3,10 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 export default class Logout extends Component {
   render() {
-    const { isLoggedIn, logout } = this.props;
     return ( <div>
-      {isLoggedIn ?
+      {this.props.isLoggedIn ?
       <a style={{color:'blue'}}
-        onClick = {logout}
+        onClick = {this.props.logout}
       >
         Logout
       </a> :

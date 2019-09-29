@@ -12,7 +12,6 @@ class App extends Component {
   constructor() {
     super();
     this.logout = this.logout.bind(this)
-    this.checkUser = this.checkUser.bind(this)
 
     this.state = {
       isLoggedIn : false,
@@ -27,6 +26,7 @@ class App extends Component {
     let interval = setInterval(this.getDataFromDB, 2000);
     this.setState({ intIsSet: interval })
   }
+
   componentWillUnmount() {
     if(this.state.intIsSet) {
     clearInterval(this.state.intIsSet);
@@ -44,19 +44,22 @@ class App extends Component {
     .then((res) => this.setState({ data: res.data }));
   };
 
-  logout = function(){
-    this.setState({isLoggedIn: false});
+  logout = () => {
     localStorage.removeItem('access_token');
-
+    this.toggleLogin()
+    this.setState({data: null });
 }
 
+  toggleLogin = () => {
+    if(token) {
+    this.setState({
+      isLoggedIn: !this.state.isLoggedIn
+    })
+  }
+  }
   clearData = () => {
     this.setState({data: null})
   }
-  checkUser = function(){
-    this.setState({isLoggedIn: true})
-  }
-
 
   render() {
     return (
@@ -69,7 +72,7 @@ class App extends Component {
 
     <Route
       exact path='/'
-      render={(props) => <Signin {...props} checkUser={this.checkUser}/>}
+      render={(props) => <Signin {...props} toggleLogin={this.toggleLogin}/>}
     />
 
     <Route
@@ -79,7 +82,7 @@ class App extends Component {
 
     <Route
       path='/register'
-      render={(props) => <Signup {...props} checkUser={this.checkUser}/>}
+      render={(props) => <Signup {...props} toggleLogin={this.toggleLogin}/>}
     />
 
     </Router>

@@ -48,8 +48,7 @@ class Signin extends Component {
     if (res.status === 200) {
       localStorage.setItem('access_token', res.data.token)
       this.props.history.push('/memories');
-      this.props.checkUser();
-
+      this.props.toggleLogin();
     } else {
       const error = new Error(res.error);
 

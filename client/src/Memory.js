@@ -132,14 +132,9 @@ render() {
           <CardHeading>'No Entries in DB' </CardHeading>
         </CardHeader>
 
-        : !isLoggedIn
+        : this.props.isLoggedIn
         ?
-        <CardWrapper>
-          <Container centered>
-            <Button error>'You must be logged in to <br/>view or post memories' </Button>
-          </Container>
-        </CardWrapper>
-        :data.map((dat) => (
+        data.map((dat) => (
           <CardWrapper key={dat.id.toString()}>
             <Container
               title={this.formatDate(dat.date)}
@@ -157,7 +152,13 @@ render() {
             </CardBody>
             </Container>
           </CardWrapper>
-        ))}
+        )):
+        <CardWrapper>
+          <Container centered>
+            <Button error>'You must be logged in to <br/>view or post memories' </Button>
+          </Container>
+        </CardWrapper>
+        }
 
 
           {isLoggedIn ?

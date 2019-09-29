@@ -46,7 +46,6 @@ class Signup extends Component {
     localStorage.setItem('access_token', res.data.token)
     this.setState({ msg: 'Registered Successfully!'})
     setTimeout(() => {
-      this.props.checkUser();
       this.props.history.push('/memories')}
       , 1000);
 
